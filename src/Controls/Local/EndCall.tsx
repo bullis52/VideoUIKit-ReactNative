@@ -17,7 +17,6 @@ const EndCall: React.FC = () => {
   return (
     <BtnTemplate
       name={'callEnd'}
-      btnText={'Hang Up'}
       color="#FFF"
       style={{...styles.endCall, ...(endCall as object)}}
       onPress={() =>
