@@ -26,7 +26,7 @@ const LocalAudioMute: React.FC<LocalAudioMuteProps> = (props) => {
   return (
     <BtnTemplate
       name={localUser.audio === ToggleState.enabled ? 'mic' : 'micOff'}
-      btnText={btnText}
+      btnText={'Аудіо'}
       style={{
         ...styles.localBtn,
         ...(variant === 'Outlined'

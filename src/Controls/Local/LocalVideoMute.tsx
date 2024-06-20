@@ -27,7 +27,7 @@ const LocalVideoMute: React.FC<LocalVideoMuteProps> = (props) => {
   return (
     <BtnTemplate
       name={local.video === ToggleState.enabled ? 'videocam' : 'videocamOff'}
-      btnText={btnText}
+      btnText={'Відео'}
       style={{
         ...styles.localBtn,
         ...(variant === 'Outlined'
