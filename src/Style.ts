@@ -119,4 +119,17 @@ export default StyleSheet.create({
     alignSelf: 'center',
     opacity: 0.5,
   },
+  networkQualityContainer: {
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    position: 'absolute',
+    bottom: 100,
+    width: '100%',
+    alignItems: 'center',
+  },
+  networkQualityText: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
+  },
 });

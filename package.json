@@ -47,5 +47,9 @@
     "typedoc": "^0.22.15",
     "typedoc-plugin-missing-exports": "^0.22.6",
     "typedoc-plugin-rename-defaults": "^0.6.4"
+  },
+  "dependencies": {
+    "react-native-fs": "^2.20.0",
+    "rn-fetch-blob": "^0.12.0"
   }
 }

@@ -36,7 +36,13 @@ import {
 } from './Reducer';
 import Create from './Rtc/Create';
 import Join from './Rtc/Join';
-import {ClientRoleType} from 'react-native-agora';
+import {
+  BackgroundSourceType,
+  ClientRoleType,
+  VideoMirrorModeType,
+} from 'react-native-agora';
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 
 const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   props,
@@ -222,29 +228,58 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       dispatch={dispatch}
       rtcUidRef={rtcUidRef}
       setRtcChannelJoined={setRtcChannelJoined}>
-      {(engineRef, joinState) => (
-        <Join
-          precall={rtcProps.callActive === false}
-          engineRef={engineRef}
-          uidState={uidState}
-          joinState={joinState}
-          dispatch={dispatch}>
-          <RtcProvider
-            value={{
-              RtcEngine: engineRef.current,
-              rtcUidRef,
-              rtcChannelJoined,
-              dispatch,
-              setDualStreamMode,
-            }}>
-            <MaxUidProvider value={uidState.max}>
-              <MinUidProvider value={uidState.min}>
-                {rtcChannelJoined ? props.children : <React.Fragment />}
-              </MinUidProvider>
-            </MaxUidProvider>
-          </RtcProvider>
-        </Join>
-      )}
+      {(engineRef, joinState) => {
+        const imageSource =
+          'https://firebasestorage.googleapis.com/v0/b/medatlant.appspot.com/o/backgroundCallNew.jpg?alt=media&token=abdd8169-2165-4fe6-947b-b4c17d4c6999';
+        const imagePath = `${RNFS.DocumentDirectoryPath}/BackgroundCall.jpg`;
+
+        RNFetchBlob.config({
+          fileCache: true,
+          path: imagePath,
+        })
+          .fetch('GET', imageSource)
+          .then((value) => {
+            engineRef.current.enableVirtualBackground(
+              true,
+              {
+                background_source_type: BackgroundSourceType.BackgroundImg,
+                source: value.data,
+              },
+              {},
+            );
+          })
+          .catch((err) => {
+            console.log(err.message, err.code);
+          });
+
+        engineRef.current.setLocalVideoMirrorMode(
+          VideoMirrorModeType.VideoMirrorModeDisabled,
+        );
+
+        return (
+          <Join
+            precall={rtcProps.callActive === false}
+            engineRef={engineRef}
+            uidState={uidState}
+            joinState={joinState}
+            dispatch={dispatch}>
+            <RtcProvider
+              value={{
+                RtcEngine: engineRef.current,
+                rtcUidRef,
+                rtcChannelJoined,
+                dispatch,
+                setDualStreamMode,
+              }}>
+              <MaxUidProvider value={uidState.max}>
+                <MinUidProvider value={uidState.min}>
+                  {rtcChannelJoined ? props.children : <React.Fragment />}
+                </MinUidProvider>
+              </MaxUidProvider>
+            </RtcProvider>
+          </Join>
+        );
+      }}
     </Create>
   );
 };
